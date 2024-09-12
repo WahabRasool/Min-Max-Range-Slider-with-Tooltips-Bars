@@ -1,0 +1,172 @@
+*,
+::before,
+::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: system-ui;
+  background-color: #222;
+  color: #eee;
+}
+
+.range_container {
+  --_marker-border-clr: #ca8a04;
+  --_marker-size: 15px;
+  --_track-heigt: 3px;
+
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sliders_control {
+  position: relative;
+}
+
+.slider-tooltip {
+  position: absolute;
+  bottom: -3.5rem;
+  left: 0;
+  width: fit-content;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: var(--_marker-border-clr);
+  font-size: 0.8rem;
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  text-align: center;
+  translate: -50% 0;
+}
+
+.slider-tooltip::before {
+  content: "";
+  position: absolute;
+  top: -0.25rem;
+  left: 50%;
+  translate: -50% 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  rotate: 45deg;
+  z-index: -1;
+  background-color: inherit;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  pointer-events: all;
+  width: var(--_marker-size);
+  height: var(--_marker-size);
+  background-color: var(--_marker-border-clr);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--_marker-border-clr);
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  /* -webkit-appearance: none; */
+  pointer-events: all;
+  width: var(--_marker-size);
+  height: var(--_marker-size);
+  background-color: var(--_marker-border-clr);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--_marker-border-clr);
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  background: #f7f7f7;
+}
+
+input[type="range"]::-webkit-slider-thumb:active {
+  box-shadow: inset 0 0 3px #387bbe, 0 0 9px #387bbe;
+  -webkit-box-shadow: inset 0 0 3px #387bbe, 0 0 9px #387bbe;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: var(--_track-heigt);
+  width: 100%;
+  position: absolute;
+  background-color: var(--_marker-border-clr);
+  pointer-events: none;
+}
+
+#fromSlider {
+  height: 0;
+  z-index: 1;
+}
+
+.scale {
+  position: relative;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  width: calc(100% - var(--_marker-size));
+  height: 70px;
+  margin-inline: auto;
+  z-index: -1;
+}
+
+.scale .marker {
+  position: absolute;
+  translate: -50% 0;
+  bottom: 100%;
+}
+
+.scale .marker::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  translate: -50%;
+  width: 5px;
+  background: var(--marker-bg, #ddd); /* Use custom property for background */
+  border-radius: 5px 5px 0 0;
+  height: 100%; /* Full height of the marker */
+}
+
+.bar {
+  --speed: 700ms;
+}
+.bar::before {
+  animation: slide-bar var(--speed) ease-in-out forwards;
+  animation-delay: calc(var(--order) * var(--speed));
+}
+
+@keyframes slide-bar {
+  to {
+    width: var(--percent);
+  }
+}
+
+.bar::after {
+  animation: slide-tooltop var(--speed) ease-in-out forwards;
+  animation-delay: calc(var(--order) * var(--speed));
+}
+
+@keyframes slide-tooltop {
+  50% {
+    opacity: 100%;
+  }
+  100% {
+    opacity: 100%;
+    left: var(--percent);
+  }
+}
+
+.step::before {
+  animation: step-done 150ms ease-in-out forwards;
+  animation-delay: var(--delay);
+}
+@keyframes step-done {
+  to {
+    inset: var(--inset);
+    color: white;
+  }
+}
